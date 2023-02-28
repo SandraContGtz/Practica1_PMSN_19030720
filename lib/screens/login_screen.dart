@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../responsive.dart';
 import 'package:psmna10/widgets/loading_modal_widget.dart';
 import 'package:social_login_buttons/social_login_buttons.dart';
 
@@ -11,14 +12,17 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   bool isLoading = false;
+
   final txtEmail = TextFormField(
     decoration: const InputDecoration(
         label: Text('Email user'), border: OutlineInputBorder()),
   );
+
   final txtPass = TextFormField(
     decoration: const InputDecoration(
         label: Text('Password user'), border: OutlineInputBorder()),
   );
+
   final spaceHorizont = SizedBox(height: 10);
 
   final btngoogle = SocialLoginButton(
@@ -32,6 +36,7 @@ class _LoginScreenState extends State<LoginScreen> {
     'assets/itce.png',
     height: 200,
   );
+
   @override
   Widget build(BuildContext context) {
     final txtRegister = Padding(
@@ -61,21 +66,166 @@ class _LoginScreenState extends State<LoginScreen> {
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: Stack(
+      body: Responsive(
+        mobile: MobileResponsive(
+          txtEmail: txtEmail,
+          txtPass: txtPass,
+          spaceHorizont: spaceHorizont,
+          btnEmail: btnEmail,
+          btngoogle: btngoogle,
+          btnface: btnface,
+          btngit: btngit,
+          txtRegister: txtRegister,
+          isLoading: isLoading,
+          imgLogo: imgLogo,
+        ),
+        tablet: TabletResponsive(
+          txtEmail: txtEmail,
+          txtPass: txtPass,
+          spaceHorizont: spaceHorizont,
+          btnEmail: btnEmail,
+          btngoogle: btngoogle,
+          btnface: btnface,
+          btngit: btngit,
+          txtRegister: txtRegister,
+          isLoading: isLoading,
+          imgLogo: imgLogo,
+        ),
+        desktop: WebResponsive(
+          txtEmail: txtEmail,
+          txtPass: txtPass,
+          spaceHorizont: spaceHorizont,
+          btnEmail: btnEmail,
+          btngoogle: btngoogle,
+          btnface: btnface,
+          btngit: btngit,
+          txtRegister: txtRegister,
+          isLoading: isLoading,
+          imgLogo: imgLogo,
+        ),
+      ),
+    );
+  }
+}
+
+class MobileResponsive extends StatelessWidget {
+  const MobileResponsive({
+    super.key,
+    required this.txtEmail,
+    required this.txtPass,
+    required this.spaceHorizont,
+    required this.btnEmail,
+    required this.btngoogle,
+    required this.btnface,
+    required this.btngit,
+    required this.txtRegister,
+    required this.isLoading,
+    required this.imgLogo,
+  });
+  final SizedBox spaceHorizont;
+  final TextFormField txtPass;
+  final SocialLoginButton btngit;
+  final SocialLoginButton btngoogle;
+  final SocialLoginButton btnface;
+  final SocialLoginButton btnEmail;
+  final Padding txtRegister;
+  final bool isLoading;
+  final Image imgLogo;
+  final TextFormField txtEmail;
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Container(
+          decoration: const BoxDecoration(
+              image: DecorationImage(
+                  opacity: .4,
+                  fit: BoxFit.cover,
+                  image: AssetImage('assets/logo.png'))),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Stack(
+              alignment: Alignment.topCenter,
+              children: [
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    txtEmail,
+                    spaceHorizont,
+                    txtPass,
+                    spaceHorizont,
+                    btnEmail,
+                    spaceHorizont,
+                    btngoogle,
+                    spaceHorizont,
+                    btnface,
+                    spaceHorizont,
+                    btngit,
+                    spaceHorizont,
+                    txtRegister
+                  ],
+                ),
+                Positioned(
+                  top: 100,
+                  child: imgLogo,
+                )
+              ],
+            ),
+          ),
+        ),
+        isLoading ? const LoadingModalWidget() : Container()
+      ],
+    );
+  }
+}
+
+class TabletResponsive extends StatelessWidget {
+  const TabletResponsive({
+    super.key,
+    required this.txtEmail,
+    required this.txtPass,
+    required this.spaceHorizont,
+    required this.btnEmail,
+    required this.btngoogle,
+    required this.btnface,
+    required this.btngit,
+    required this.txtRegister,
+    required this.isLoading,
+    required this.imgLogo,
+  });
+  final SizedBox spaceHorizont;
+  final TextFormField txtPass;
+  final SocialLoginButton btngit;
+  final SocialLoginButton btngoogle;
+  final SocialLoginButton btnface;
+  final Padding txtRegister;
+  final SocialLoginButton btnEmail;
+  final bool isLoading;
+  final Image imgLogo;
+  final TextFormField txtEmail;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: const BoxDecoration(
+        image: DecorationImage(
+          opacity: .4,
+          fit: BoxFit.cover,
+          image: AssetImage('assets/logo.png'),
+        ),
+      ),
+      child: Row(
         children: [
-          Container(
-            decoration: const BoxDecoration(
-                image: DecorationImage(
-                    opacity: .4,
-                    fit: BoxFit.cover,
-                    image: AssetImage('assets/logo.png'))),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Stack(
-                alignment: Alignment.topCenter,
-                children: [
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
+          Expanded(child: imgLogo),
+          Expanded(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  width: 300.0,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       txtEmail,
                       spaceHorizont,
@@ -92,15 +242,82 @@ class _LoginScreenState extends State<LoginScreen> {
                       txtRegister
                     ],
                   ),
-                  Positioned(
-                    top: 100,
-                    child: imgLogo,
-                  )
-                ],
-              ),
+                ),
+              ],
             ),
           ),
-          isLoading ? const LoadingModalWidget() : Container()
+        ],
+      ),
+    );
+  }
+}
+
+class WebResponsive extends StatelessWidget {
+  const WebResponsive({
+    super.key,
+    required this.txtEmail,
+    required this.txtPass,
+    required this.spaceHorizont,
+    required this.btnEmail,
+    required this.btngoogle,
+    required this.btnface,
+    required this.btngit,
+    required this.txtRegister,
+    required this.isLoading,
+    required this.imgLogo,
+  });
+  final SizedBox spaceHorizont;
+  final TextFormField txtPass;
+  final SocialLoginButton btngit;
+  final SocialLoginButton btngoogle;
+  final SocialLoginButton btnface;
+  final Padding txtRegister;
+  final SocialLoginButton btnEmail;
+  final bool isLoading;
+  final Image imgLogo;
+  final TextFormField txtEmail;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: const BoxDecoration(
+        image: DecorationImage(
+          opacity: .4,
+          fit: BoxFit.cover,
+          image: AssetImage('assets/logo.png'),
+        ),
+      ),
+      child: Row(
+        children: [
+          Expanded(child: imgLogo),
+          Expanded(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  width: 450.0,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      txtEmail,
+                      spaceHorizont,
+                      txtPass,
+                      spaceHorizont,
+                      btnEmail,
+                      spaceHorizont,
+                      btngoogle,
+                      spaceHorizont,
+                      btnface,
+                      spaceHorizont,
+                      btngit,
+                      spaceHorizont,
+                      txtRegister
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );
