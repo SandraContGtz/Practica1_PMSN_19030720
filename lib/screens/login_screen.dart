@@ -142,7 +142,7 @@ class MobileResponsive extends StatelessWidget {
               image: DecorationImage(
                   opacity: .4,
                   fit: BoxFit.cover,
-                  image: AssetImage('assets/logo.png'))),
+                  image: AssetImage('assets/fondo.jpg'))),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Stack(
@@ -212,7 +212,7 @@ class TabletResponsive extends StatelessWidget {
         image: DecorationImage(
           opacity: .4,
           fit: BoxFit.cover,
-          image: AssetImage('assets/logo.png'),
+          image: AssetImage('assets/fondo.jpg'),
         ),
       ),
       child: Row(
@@ -284,7 +284,7 @@ class WebResponsive extends StatelessWidget {
         image: DecorationImage(
           opacity: .4,
           fit: BoxFit.cover,
-          image: AssetImage('assets/logo.png'),
+          image: AssetImage('assets/fondo.jpg'),
         ),
       ),
       child: Row(
