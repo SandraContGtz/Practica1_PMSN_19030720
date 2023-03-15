@@ -5,7 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class ThemeProvider with ChangeNotifier {
   ThemeData? _themeData;
-  Color? colores;
+
   ThemeProvider(int tema, BuildContext context) {
     setthemeData(tema, context);
     //_themeData = StylesSettings.lightTheme(context);
@@ -22,11 +22,12 @@ class ThemeProvider with ChangeNotifier {
       case 2:
         _themeData = StylesSettings.lightTheme(context);
         sharedPreferences.setInt('tema', 2);
+        await sharedPreferences.setBool('is_light', true);
         break;
       default:
         _themeData = StylesSettings.lightTheme(context);
-        sharedPreferences.setInt('tema', 1);
-        await sharedPreferences.setBool('is_dark', false);
+        sharedPreferences.setInt('tema', 2);
+        await sharedPreferences.setBool('is_light', false);
         break;
     }
     notifyListeners();

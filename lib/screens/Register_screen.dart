@@ -2,6 +2,8 @@ import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
+import 'package:provider/provider.dart';
+import 'package:psmna10/provider/color_provider.dart';
 import 'package:social_login_buttons/social_login_buttons.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -68,10 +70,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
+    ColorProvider colorApp = Provider.of<ColorProvider>(context);
     //_imageFile!;
     final btnEmail = TextButton(
       style: TextButton.styleFrom(
-        backgroundColor: Color.fromARGB(255, 246, 148, 171),
+        backgroundColor: colorApp.getColorBar(),
+        //Color.fromARGB(255, 246, 148, 171),
         foregroundColor: Color.fromARGB(255, 29, 4, 4),
         padding: const EdgeInsets.all(16.0),
         textStyle: const TextStyle(fontSize: 20),
@@ -80,16 +84,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
         (_FormKey.currentState?.validate()) == true
             ? Navigator.pushNamed(context, '/login')
             : print("Button pressed");
-
-        //print("Button pressed");
-        //Navigator.pushNamed(context, '/login');
       },
       child: const Text("Register"),
     );
     return Scaffold(
       appBar: AppBar(
         title: const Text('Register'),
-        backgroundColor: Color.fromARGB(255, 246, 148, 171),
+        backgroundColor: colorApp.getColorBar(),
+        //Color.fromARGB(255, 246, 148, 171),
       ),
       body: Container(
         padding: const EdgeInsets.all(50.0),

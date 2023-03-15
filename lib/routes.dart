@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:psmna10/screens/Register_screen.dart';
+import 'package:psmna10/screens/add_post_screen.dart';
 import 'package:psmna10/screens/dashboard_screen.dart';
 import 'package:psmna10/screens/login_screen.dart';
 import 'package:psmna10/screens/theme_page.dart';
@@ -10,5 +11,6 @@ Map<String, WidgetBuilder> getApplicationRoutes() {
     '/dash': (BuildContext context) => DashboardScreen(),
     '/login': (BuildContext context) => const LoginScreen(),
     '/theme': (BuildContext context) => const ThemeChoose(),
+    '/add': (BuildContext context) => AddPostScreen(),
   };
 }
