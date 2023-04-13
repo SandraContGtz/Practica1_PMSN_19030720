@@ -3,6 +3,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:provider/provider.dart';
+import 'package:psmna10/firebase/email_auth.dart';
 import 'package:psmna10/provider/color_provider.dart';
 import 'package:social_login_buttons/social_login_buttons.dart';
 
@@ -14,6 +15,9 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
+  TextEditingController emailUser = TextEditingController();
+  TextEditingController passwordUser = TextEditingController();
+  EmailAuth emailAuth = EmailAuth();
   final ImagePicker _picker = ImagePicker();
   final _FormKey = GlobalKey<FormState>();
   PickedFile? _imageFile;
@@ -51,6 +55,23 @@ class _RegisterScreenState extends State<RegisterScreen> {
       ],
     ),
   );
+
+  final password = TextFormField(
+    autovalidateMode: AutovalidateMode.onUserInteraction,
+    obscureText: true,
+    decoration: const InputDecoration(
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(10),
+          ),
+        ),
+        hintText: 'Password',
+        labelText: 'Password',
+        prefixIcon: Icon(Icons.password)),
+    validator: MultiValidator(
+      [RequiredValidator(errorText: 'Required*')],
+    ),
+  );
   final lastname = TextFormField(
     autovalidateMode: AutovalidateMode.onUserInteraction,
     decoration: const InputDecoration(
@@ -72,21 +93,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget build(BuildContext context) {
     ColorProvider colorApp = Provider.of<ColorProvider>(context);
     //_imageFile!;
-    final btnEmail = TextButton(
-      style: TextButton.styleFrom(
-        backgroundColor: colorApp.getColorBar(),
-        //Color.fromARGB(255, 246, 148, 171),
-        foregroundColor: Color.fromARGB(255, 29, 4, 4),
-        padding: const EdgeInsets.all(16.0),
-        textStyle: const TextStyle(fontSize: 20),
-      ),
-      onPressed: () {
-        (_FormKey.currentState?.validate()) == true
-            ? Navigator.pushNamed(context, '/login')
-            : print("Button pressed");
-      },
-      child: const Text("Register"),
-    );
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Register'),
@@ -110,7 +117,31 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 spaceHorizont,
                 email,
                 spaceHorizont,
-                btnEmail
+                password,
+                spaceHorizont,
+                /*final btnEmail = */ TextButton(
+                  style: TextButton.styleFrom(
+                    backgroundColor: colorApp.getColorBar(),
+                    //Color.fromARGB(255, 246, 148, 171),
+                    foregroundColor: Color.fromARGB(255, 29, 4, 4),
+                    padding: const EdgeInsets.all(16.0),
+                    textStyle: const TextStyle(fontSize: 20),
+                  ),
+                  onPressed: () {
+                    if (_FormKey.currentState!.validate() == true) {
+                      emailAuth.createUserWithEmailAndPassword(
+                          email: emailUser.text.toString(),
+                          password: passwordUser.text.toString());
+                      Navigator.pushNamed(context, '/dash');
+                    }
+
+                    /*(_FormKey.currentState?.validate()) == true
+            ? emailAuth!.createUserWithEmailAndPassword(email: emailUser.text, password: passwordUser.text);
+            //Navigator.pushNamed(context, '/login')
+            : print("Button pressed");*/
+                  },
+                  child: const Text("Register"),
+                )
               ],
             ),
           ),

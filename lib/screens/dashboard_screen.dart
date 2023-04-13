@@ -21,7 +21,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget build(BuildContext context) {
     ColorProvider colorApp = Provider.of<ColorProvider>(context);
     ThemeProvider theme = Provider.of<ThemeProvider>(context);
-    dynamic colors = colorApp.getColorBar();
     return Scaffold(
       appBar: AppBar(
         title: Text('Social TEC'),
@@ -41,10 +40,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
         child: ListView(
           children: [
             const UserAccountsDrawerHeader(
-
-                /*decoration: BoxDecoration(
-                  color: colorApp.getColorBar(),
-                ),*/
+                decoration:
+                    BoxDecoration(color: Color.fromARGB(255, 36, 159, 236)
+                        //Color(colors/*colorApp.getColorBar()*/),
+                        ),
                 currentAccountPicture: CircleAvatar(
                   backgroundImage: NetworkImage(
                       'https://static.wikia.nocookie.net/liga-mx/images/1/11/LTClogoant.png/revision/latest?cb=20200826190754&path-prefix=es'),
@@ -66,6 +65,24 @@ class _DashboardScreenState extends State<DashboardScreen> {
               subtitle: const Text('Preferencias del tema'),
               leading: const Icon(Icons.settings_accessibility_rounded),
               trailing: const Icon(Icons.chevron_right),
+            ),
+            ListTile(
+              onTap: () {
+                Navigator.pushNamed(context, '/popular');
+              },
+              title: const Text('API video'),
+              leading: const Icon(Icons.movie),
+              trailing: const Icon(Icons.chevron_right),
+            ),
+            ListTile(
+              onTap: () {
+                Navigator.pushNamed(context, '/events');
+              },
+              title: const Text('Eventos'),
+              leading: const Icon(Icons.calendar_month),
+              trailing: const Icon(
+                Icons.chevron_right,
+              ),
             ),
             /*DayNightSwitcher(
                 isDarkModeEnabled: isDarkModeEnabled,

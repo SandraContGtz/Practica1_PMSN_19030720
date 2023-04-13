@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:psmna10/firebase/email_auth.dart';
 import '../responsive.dart';
 import 'package:psmna10/widgets/loading_modal_widget.dart';
 import 'package:social_login_buttons/social_login_buttons.dart';
@@ -12,17 +13,9 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   bool isLoading = false;
-
-  final txtEmail = TextFormField(
-    decoration: const InputDecoration(
-        label: Text('Email user'), border: OutlineInputBorder()),
-  );
-
-  final txtPass = TextFormField(
-    decoration: const InputDecoration(
-        label: Text('Password user'), border: OutlineInputBorder()),
-  );
-
+  EmailAuth emailAuth = EmailAuth();
+  TextEditingController emailtxt = TextEditingController();
+  TextEditingController passtxt = TextEditingController();
   final spaceHorizont = SizedBox(height: 10);
 
   final btngoogle = SocialLoginButton(
@@ -39,6 +32,18 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final txtEmail = TextFormField(
+      controller: emailtxt,
+      decoration: const InputDecoration(
+          label: Text('Email user'), border: OutlineInputBorder()),
+    );
+
+    final txtPass = TextFormField(
+      controller: passtxt,
+      decoration: const InputDecoration(
+          label: Text('Password user'), border: OutlineInputBorder()),
+    );
+
     final txtRegister = Padding(
       padding: const EdgeInsets.symmetric(vertical: 20),
       child: TextButton(
@@ -57,12 +62,45 @@ class _LoginScreenState extends State<LoginScreen> {
         onPressed: () {
           isLoading = true;
           setState(() {});
-          Future.delayed(Duration(milliseconds: 4000)).then((value) {
-            isLoading = false;
-            setState(() {});
-            Navigator.pushNamed(context, '/dash');
+          //Future.delayed(const Duration(milliseconds: 4000)).then((value) {
+          emailAuth
+              .signInWithEmailandPassword(
+                  email: emailtxt.text, password: passtxt.text)
+              .then((value) {
+            if (value) {
+              Navigator.pushNamed(context, '/dash');
+            } else {
+              const SnackBar(
+                  content: Text('Introduce las credenciales correctas'));
+              //snackbar de error
+            }
           });
+          isLoading = false;
+          setState(() {});
         });
+    /*final btnEmail = SocialLoginButton(
+        buttonType: SocialLoginButtonType.generalLogin,
+        onPressed: () {
+          isLoading = true;
+          setState(() {});
+          /*Future.delayed(Duration(milliseconds: 4000)).then((value) {
+            
+          });*/
+          emailAuth
+              .signInWithEmailandPassword(
+                  email: emailtxt.text, password: passtxt.text)
+              .then((value) {
+            if (value) {
+              Navigator.pushNamed(context, '/dash');
+            } else {
+              const SnackBar(
+                  content: Text('Introduce las credenciales correctas'));
+              //Snackbar error
+            }
+          });
+          isLoading = false;
+          setState(() {});
+        });*/
 
     return Scaffold(
       resizeToAvoidBottomInset: false,

@@ -12,16 +12,16 @@ class ItemPostWidget extends StatelessWidget {
   DatabaseHelper database = DatabaseHelper();
   @override
   Widget build(BuildContext context) {
-    final avatar = CircleAvatar(
+    final avatar = const CircleAvatar(
       backgroundImage: AssetImage('assets/itce.png'),
     );
-    final txtUser = Text('Sandra ');
+    final txtUser = const Text('Sandra ');
     final datePost = Text('06-03-2023');
     final imgPost = Image(
       image: AssetImage('assets/fondo.jpg'),
       height: 100,
     );
-    final txtDesc = Text('Descripción del texto');
+    final txtDesc = Text(objPostModel!.dscPost!);
     final iconRate = Icon(Icons.rate_review);
 
     FlagsProvider flag = Provider.of<FlagsProvider>(context);
@@ -47,7 +47,9 @@ class ItemPostWidget extends StatelessWidget {
               iconRate,
               Expanded(child: Container()),
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushNamed(context, '/add', arguments: objPostModel);
+                },
                 icon: Icon(Icons.edit),
               ),
               IconButton(
