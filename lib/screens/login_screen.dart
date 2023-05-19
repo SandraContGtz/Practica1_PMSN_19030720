@@ -57,7 +57,7 @@ class _LoginScreenState extends State<LoginScreen> {
           )),
     );
 
-    final btnEmail = SocialLoginButton(
+    /*final btnEmail = SocialLoginButton(
         buttonType: SocialLoginButtonType.generalLogin,
         onPressed: () {
           isLoading = true;
@@ -77,8 +77,8 @@ class _LoginScreenState extends State<LoginScreen> {
           });
           isLoading = false;
           setState(() {});
-        });
-    /*final btnEmail = SocialLoginButton(
+        });*/
+    final btnEmail = SocialLoginButton(
         buttonType: SocialLoginButtonType.generalLogin,
         onPressed: () {
           isLoading = true;
@@ -100,7 +100,7 @@ class _LoginScreenState extends State<LoginScreen> {
           });
           isLoading = false;
           setState(() {});
-        });*/
+        });
 
     return Scaffold(
       resizeToAvoidBottomInset: false,

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:psmna10/provider/color_provider.dart';
 import 'package:psmna10/provider/theme_provider.dart';
+import 'package:psmna10/screens/list_favorites_cloud.dart';
 import 'package:psmna10/screens/list_post.dart';
 import 'package:psmna10/screens/theme_page.dart';
 import 'package:psmna10/settings/styles_settings.dart';
@@ -26,7 +27,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         title: Text('Social TEC'),
         backgroundColor: colorApp.getColorBar(),
       ),
-      body: ListPost(),
+      body: const ListFavoritesCloud(), //ListPost(),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           Navigator.pushNamed(context, '/add').then((value) {
@@ -80,6 +81,26 @@ class _DashboardScreenState extends State<DashboardScreen> {
               },
               title: const Text('Eventos'),
               leading: const Icon(Icons.calendar_month),
+              trailing: const Icon(
+                Icons.chevron_right,
+              ),
+            ),
+            ListTile(
+              onTap: () {
+                Navigator.pushNamed(context, '/marvel');
+              },
+              title: const Text('API Marvel'),
+              leading: const Icon(Icons.api),
+              trailing: const Icon(
+                Icons.chevron_right,
+              ),
+            ),
+            ListTile(
+              onTap: () {
+                Navigator.pushNamed(context, '/map');
+              },
+              title: const Text('Mapas'),
+              leading: const Icon(Icons.map),
               trailing: const Icon(
                 Icons.chevron_right,
               ),

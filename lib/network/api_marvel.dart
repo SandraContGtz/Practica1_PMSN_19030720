@@ -1,18 +1,28 @@
 import 'dart:convert';
-
+import 'package:crypto/crypto.dart' as crypto;
 import 'package:http/http.dart' as http;
 import 'package:psmna10/models/actor_model.dart';
+import 'package:psmna10/models/marvel_model.dart';
 import 'package:psmna10/models/popular_model.dart';
 
-class ApiPopular {
+class ApiMarvel {
+  String? ImageUrl;
   Uri link = Uri.parse(
-      'https://api.themoviedb.org/3/movie/popular?api_key=d6d3ffa89d31643bcd9a2400469a76c4&language=es-MX&page=1');
+      'https://gateway.marvel.com:443/v1/public/characters?ts=1&apikey=2e0a6cbb87ee82683b81895e9c0bb464&hash=a24926dc50a0f15742c0d66f191ad3c8');
 
-  Future<List<PopularModel>?> getAllPopular() async {
+  Future<List<CharacterModel>?> getAllCharacters() async {
     var result = await http.get(link);
-    var listJson = jsonDecode(result.body)['results'] as List;
+    var listJson = jsonDecode(result.body)['data']['results'] as List;
+    /*String path =
+        json.decode(result.body)["data"]["results"][0]["thumbnail"]["path"];
+    String ext = json.decode(result.body)["data"]["results"][0]["thumbnail"]
+        ["extension"];
+    ImageUrl = '$path.$ext';*/
+
     if (result.statusCode == 200) {
-      return listJson.map((popular) => PopularModel.fromMap(popular)).toList();
+      return listJson
+          .map((popular) => CharacterModel.fromMap(popular))
+          .toList();
     }
     return null;
   }
@@ -20,7 +30,7 @@ class ApiPopular {
   Future<String> getIdVideo(int id_popular) async {
     Uri auxVideo = Uri.parse('https://api.themoviedb.org/3/movie/' +
         id_popular.toString() +
-        '/videos?api_key=d6d3ffa89d31643bcd9a2400469a76c4');
+        '/videos?api_key=d7236b730825fb7b3c7e23e7d91e473c');
     var result = await http.get(auxVideo);
     var listJSON = jsonDecode(result.body)['results'] as List;
     if (result.statusCode == 200) {
@@ -33,7 +43,7 @@ class ApiPopular {
   Future<List<ActorModel>?> getAllAuthors(PopularModel modelito) async {
     Uri auxActores = Uri.parse('https://api.themoviedb.org/3/movie/' +
         modelito.id.toString() +
-        '/credits?api_key=d6d3ffa89d31643bcd9a2400469a76c4');
+        '/credits?api_key=d7236b730825fb7b3c7e23e7d91e473c');
     var result = await http.get(auxActores);
     var listJSON = jsonDecode(result.body)['cast'] as List;
     if (result.statusCode == 200) {

@@ -56,6 +56,10 @@ dependencies:
   intl: ^0.17.0
   youtube_player_flutter: ^8.1.2
   flutter_rating_bar: ^4.0.1
+  crypto: ^3.0.2
+  cloud_firestore: ^4.5.2
+  google_maps_flutter: ^2.2.6
+  circular_menu: ^2.0.1
   
 
 dev_dependencies:

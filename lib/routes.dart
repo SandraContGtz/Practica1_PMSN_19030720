@@ -4,9 +4,12 @@ import 'package:psmna10/screens/add_post_screen.dart';
 import 'package:psmna10/screens/dashboard_screen.dart';
 import 'package:psmna10/screens/events_list_screen.dart';
 import 'package:psmna10/screens/events_screen.dart';
+import 'package:psmna10/screens/list_characters.dart';
+import 'package:psmna10/screens/list_favorites_cloud.dart';
 import 'package:psmna10/screens/list_popular_videos.dart';
 import 'package:psmna10/screens/list_events.dart';
 import 'package:psmna10/screens/login_screen.dart';
+import 'package:psmna10/screens/map_screen.dart';
 import 'package:psmna10/screens/theme_page.dart';
 
 Map<String, WidgetBuilder> getApplicationRoutes() {
@@ -19,5 +22,8 @@ Map<String, WidgetBuilder> getApplicationRoutes() {
     '/popular': (BuildContext context) => const ListPopularVideos(),
     '/events': (BuildContext context) => CalendarEvents(),
     '/eventsList': (BuildContext context) => const EventList(),
+    '/marvel': (BuildContext context) => const ListCharacters(),
+    '/favorites': (BuildContext context) => const ListFavoritesCloud(),
+    '/map': (BuildContext context) => const MapSample()
   };
 }

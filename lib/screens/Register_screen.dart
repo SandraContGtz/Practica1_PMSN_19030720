@@ -136,7 +136,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     }
 
                     /*(_FormKey.currentState?.validate()) == true
-            ? emailAuth!.createUserWithEmailAndPassword(email: emailUser.text, password: passwordUser.text);
+            ? emailAuth.createUserWithEmailAndPassword(email: emailUser.text, password: passwordUser.text);
             //Navigator.pushNamed(context, '/login')
             : print("Button pressed");*/
                   },
