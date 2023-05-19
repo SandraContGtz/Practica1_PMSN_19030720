@@ -37,41 +37,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
     ),
   );
 
-  final email = TextFormField(
-    autovalidateMode: AutovalidateMode.onUserInteraction,
-    decoration: const InputDecoration(
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.all(
-            Radius.circular(10),
-          ),
-        ),
-        hintText: 'Email',
-        labelText: 'Email',
-        prefixIcon: Icon(Icons.email)),
-    validator: MultiValidator(
-      [
-        RequiredValidator(errorText: 'Required*'),
-        EmailValidator(errorText: 'Please enter your valid email'),
-      ],
-    ),
-  );
-
-  final password = TextFormField(
-    autovalidateMode: AutovalidateMode.onUserInteraction,
-    obscureText: true,
-    decoration: const InputDecoration(
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.all(
-            Radius.circular(10),
-          ),
-        ),
-        hintText: 'Password',
-        labelText: 'Password',
-        prefixIcon: Icon(Icons.password)),
-    validator: MultiValidator(
-      [RequiredValidator(errorText: 'Required*')],
-    ),
-  );
+  
+ 
   final lastname = TextFormField(
     autovalidateMode: AutovalidateMode.onUserInteraction,
     decoration: const InputDecoration(
@@ -115,11 +82,45 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 spaceHorizont,
                 lastname,
                 spaceHorizont,
-                email,
+                TextFormField(
+                  controller: emailUser,
+    autovalidateMode: AutovalidateMode.onUserInteraction,
+    decoration: const InputDecoration(
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(10),
+          ),
+        ),
+        hintText: 'Email',
+        labelText: 'Email',
+        prefixIcon: Icon(Icons.email)),
+    validator: MultiValidator(
+      [
+        RequiredValidator(errorText: 'Required*'),
+        EmailValidator(errorText: 'Please enter your valid email'),
+      ],
+    ),
+  ),
                 spaceHorizont,
-                password,
+                TextFormField(
+                  controller: passwordUser,
+    autovalidateMode: AutovalidateMode.onUserInteraction,
+    obscureText: true,
+    decoration: const InputDecoration(
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(10),
+          ),
+        ),
+        hintText: 'Password',
+        labelText: 'Password',
+        prefixIcon: Icon(Icons.password)),
+    validator: MultiValidator(
+      [RequiredValidator(errorText: 'Required*')],
+    ),
+  ),
                 spaceHorizont,
-                /*final btnEmail = */ TextButton(
+                TextButton(
                   style: TextButton.styleFrom(
                     backgroundColor: colorApp.getColorBar(),
                     //Color.fromARGB(255, 246, 148, 171),
@@ -129,9 +130,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                   onPressed: () {
                     if (_FormKey.currentState!.validate() == true) {
-                      emailAuth.createUserWithEmailAndPassword(
-                          email: emailUser.text.toString(),
-                          password: passwordUser.text.toString());
+                      emailAuth.registerWithEmailAndPassword(
+                          email: emailUser.text,
+                          password: passwordUser.text);
                       Navigator.pushNamed(context, '/dash');
                     }
 

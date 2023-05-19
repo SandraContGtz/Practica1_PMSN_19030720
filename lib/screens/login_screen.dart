@@ -86,8 +86,7 @@ class _LoginScreenState extends State<LoginScreen> {
           /*Future.delayed(Duration(milliseconds: 4000)).then((value) {
             
           });*/
-          emailAuth
-              .signInWithEmailandPassword(
+          emailAuth.signInWithEmailAndPassword(
                   email: emailtxt.text, password: passtxt.text)
               .then((value) {
             if (value) {

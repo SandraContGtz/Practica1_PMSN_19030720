@@ -22,7 +22,7 @@ Map<String, WidgetBuilder> getApplicationRoutes() {
     '/popular': (BuildContext context) => const ListPopularVideos(),
     '/events': (BuildContext context) => CalendarEvents(),
     '/eventsList': (BuildContext context) => const EventList(),
-    '/marvel': (BuildContext context) => const ListCharacters(),
+    '/marvel': (BuildContext context) => const CharactersScreen(),
     '/favorites': (BuildContext context) => const ListFavoritesCloud(),
     '/map': (BuildContext context) => const MapSample()
   };
