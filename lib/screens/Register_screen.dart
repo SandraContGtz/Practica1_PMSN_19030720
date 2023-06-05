@@ -1,10 +1,12 @@
 import 'dart:io';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:provider/provider.dart';
 import 'package:psmna10/firebase/email_auth.dart';
 import 'package:psmna10/provider/color_provider.dart';
+import 'package:psmna10/screens/photo_screen.dart';
 import 'package:social_login_buttons/social_login_buttons.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -17,11 +19,24 @@ class RegisterScreen extends StatefulWidget {
 class _RegisterScreenState extends State<RegisterScreen> {
   TextEditingController emailUser = TextEditingController();
   TextEditingController passwordUser = TextEditingController();
+  TextEditingController name=TextEditingController();
+  TextEditingController lastnam=TextEditingController();
+  String? username;
   EmailAuth emailAuth = EmailAuth();
   final ImagePicker _picker = ImagePicker();
   final _FormKey = GlobalKey<FormState>();
   PickedFile? _imageFile;
+  
+  
+ 
+  
+
+  @override
+  Widget build(BuildContext context) {
+    ColorProvider colorApp = Provider.of<ColorProvider>(context);
+    //_imageFile!;
   final firstname = TextFormField(
+    controller: name,
     autovalidateMode: AutovalidateMode.onUserInteraction,
     decoration: const InputDecoration(
         border: OutlineInputBorder(
@@ -37,9 +52,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
     ),
   );
 
-  
- 
   final lastname = TextFormField(
+    controller: lastnam,
     autovalidateMode: AutovalidateMode.onUserInteraction,
     decoration: const InputDecoration(
         border: OutlineInputBorder(
@@ -55,11 +69,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
     ),
   );
   final spaceHorizont = SizedBox(height: 20);
-
-  @override
-  Widget build(BuildContext context) {
-    ColorProvider colorApp = Provider.of<ColorProvider>(context);
-    //_imageFile!;
 
     return Scaffold(
       appBar: AppBar(
@@ -128,13 +137,61 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     padding: const EdgeInsets.all(16.0),
                     textStyle: const TextStyle(fontSize: 20),
                   ),
-                  onPressed: () {
+                  onPressed: () 
+                  
+                  async{
+                     if (_imageFile!.path != null) {  
+                          final uploaded = await uploadImage(File(_imageFile!.path));
+                          if (uploaded) {
+                            //flag.setflagListPost();
+                            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                                content: Text('Imagen subida correctamente')));
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                              content: Text('Error al subir la imagen')));
+                            }
+                        }
+                    if (_FormKey.currentState!.validate() == true) {
+                      try{
+                          username=name.text+' '+lastnam.text;
+                          emailAuth.registerWithEmailAndPassword(
+                          email: emailUser.text,
+                          password: passwordUser.text,
+                          ).then((value) {
+                          FirebaseAuth.instance.currentUser!.updateDisplayName(username);
+
+          if (value) {
+            //user!.sendEmailVerification();
+            //user!.displayName!=username.text;
+            Navigator.pushNamed(context, '/dash');
+          }
+        });
+      } catch (e) {
+        AlertDialog(
+          title: Text("Error"),
+          content: Text("Ocurrió un error al procesar la información, por favor, vuelve a intentarlo"),
+          actions: [
+            TextButton(onPressed: (){MaterialPageRoute(builder: (context)=> RegisterScreen());}, child: Text('Aceptar'))
+          ],
+        );
+      }
+    } else {
+      AlertDialog(
+          title: Text("Error"),
+          content: Text("Verifica que los datos sean correctos."),
+          actions: [
+            TextButton(onPressed: (){MaterialPageRoute(builder: (context)=> RegisterScreen());}, child: Text('Aceptar'))
+          ],
+        );
+    }
+                  
+                  /*{
                     if (_FormKey.currentState!.validate() == true) {
                       emailAuth.registerWithEmailAndPassword(
                           email: emailUser.text,
                           password: passwordUser.text);
                       Navigator.pushNamed(context, '/dash');
-                    }
+                    }*/
 
                     /*(_FormKey.currentState?.validate()) == true
             ? emailAuth.createUserWithEmailAndPassword(email: emailUser.text, password: passwordUser.text);

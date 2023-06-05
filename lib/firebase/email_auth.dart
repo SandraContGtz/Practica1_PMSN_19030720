@@ -46,4 +46,12 @@ class EmailAuth {
       return false;
     } 
   }
+
+  Future<void> signOut() async {
+    try {
+      /*await _googleSignIn.signOut();
+      await facebookAuth.logOut();*/
+      await _auth.signOut();
+    } catch (e) {}
+  }
 }

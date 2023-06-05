@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:psmna10/firebase/email_auth.dart';
+import 'package:psmna10/firebase/facebook_firebase.dart';
+import 'package:psmna10/firebase/google_auth.dart';
 import '../responsive.dart';
 import 'package:psmna10/widgets/loading_modal_widget.dart';
 import 'package:social_login_buttons/social_login_buttons.dart';
@@ -14,14 +16,14 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   bool isLoading = false;
   EmailAuth emailAuth = EmailAuth();
+  FaceAuth faceAuth= FaceAuth();
+  GoogleAuth googleAuth=GoogleAuth();
   TextEditingController emailtxt = TextEditingController();
   TextEditingController passtxt = TextEditingController();
   final spaceHorizont = SizedBox(height: 10);
 
-  final btngoogle = SocialLoginButton(
-      buttonType: SocialLoginButtonType.google, onPressed: () {});
-  final btnface = SocialLoginButton(
-      buttonType: SocialLoginButtonType.facebook, onPressed: () {});
+  
+  
   final btngit = SocialLoginButton(
       buttonType: SocialLoginButtonType.github, onPressed: () {});
 
@@ -78,6 +80,40 @@ class _LoginScreenState extends State<LoginScreen> {
           isLoading = false;
           setState(() {});
         });*/
+
+
+        final btngoogle = SocialLoginButton(
+      buttonType: SocialLoginButtonType.google, onPressed: () async{
+        isLoading=true;
+        setState(() {});
+        googleAuth.signInWithGoogle().then((value) {
+         if(value.name!=null){
+             Navigator.pushNamed(context, '/dash',arguments:value);
+             isLoading=false;
+          }else{
+            isLoading=false;
+            SnackBar(content: Text('Verifica tus credenciales'),);
+          }
+          setState(() {});
+        });
+      });
+
+
+      final btnface = SocialLoginButton(
+      buttonType: SocialLoginButtonType.facebook, onPressed: ()async{
+        isLoading=true;
+        setState(() {});
+        faceAuth.signInWithFacebook().then((value) {
+         if(value.name!=null){
+             Navigator.pushNamed(context, '/dash',arguments:value);
+             isLoading=false;
+          }else{
+            isLoading=false;
+            SnackBar(content: Text('Verifica tus credenciales'),);
+          }
+          setState(() {});
+        });
+      });
     final btnEmail = SocialLoginButton(
         buttonType: SocialLoginButtonType.generalLogin,
         onPressed: () {

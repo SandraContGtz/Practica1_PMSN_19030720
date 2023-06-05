@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:psmna10/screens/Register_screen.dart';
 import 'package:psmna10/screens/add_post_screen.dart';
 import 'package:psmna10/screens/dashboard_screen.dart';
+import 'package:psmna10/screens/edit_profile_screen.dart';
 import 'package:psmna10/screens/events_list_screen.dart';
 import 'package:psmna10/screens/events_screen.dart';
 import 'package:psmna10/screens/list_characters.dart';
@@ -24,6 +25,7 @@ Map<String, WidgetBuilder> getApplicationRoutes() {
     '/eventsList': (BuildContext context) => const EventList(),
     '/marvel': (BuildContext context) => const CharactersScreen(),
     '/favorites': (BuildContext context) => const ListFavoritesCloud(),
-    '/map': (BuildContext context) => const MapSample()
+    '/map': (BuildContext context) => const MapSample(),
+    '/edit' : (BuildContext context) => const EditProfile(),
   };
 }
