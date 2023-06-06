@@ -16,7 +16,10 @@ class EventItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final txtDesc = Text(objEvent!.dscEvento!);
-    final txttitle = Text(objEvent!.titlEvento!);
+    final txttitle = Text(
+      objEvent!.titlEvento!,
+      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+    );
     final dateEvent = Text(objEvent!.fechaEvento!.toString());
 
     final txtPostController = TextEditingController();

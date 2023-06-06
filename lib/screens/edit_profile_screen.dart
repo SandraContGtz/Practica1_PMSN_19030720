@@ -8,7 +8,6 @@ import 'package:provider/provider.dart';
 import 'package:psmna10/provider/flags_provider.dart';
 import 'package:psmna10/screens/photo_screen.dart';
 
-
 class EditProfile extends StatefulWidget {
   const EditProfile({super.key});
 
@@ -17,17 +16,15 @@ class EditProfile extends StatefulWidget {
 }
 
 class _EditProfileState extends State<EditProfile> {
-  
-  TextEditingController newn=TextEditingController();
+  TextEditingController newn = TextEditingController();
   ValueNotifier<XFile?> image = ValueNotifier<XFile?>(null);
-  ValueNotifier<bool> cname=ValueNotifier<bool>(false);
-  Color primarycolor=Colors.blue;
-  Color redcolor=Colors.red;
+  ValueNotifier<bool> cname = ValueNotifier<bool>(false);
+  Color primarycolor = Colors.blue;
+  Color redcolor = Colors.red;
   final ImagePicker _picker = ImagePicker();
   PickedFile? _imageFile;
   @override
   Widget build(BuildContext context) {
-
     FlagsProvider flag = Provider.of<FlagsProvider>(context);
     return Scaffold(
       appBar: AppBar(
@@ -39,176 +36,209 @@ class _EditProfileState extends State<EditProfile> {
         child: Column(
           //mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SizedBox(height: 15,),
-            ClipRRect(
-              child: ValueListenableBuilder(
-                valueListenable: image,
-                builder: (context, value, child) {
-                  return FirebaseAuth.instance.currentUser!.photoURL !=
-                                        null
-                                    ? value?.path == null
-                                        ? FirebaseAuth.instance.currentUser
-                                                    ?.photoURL!
-                                                    .contains(
-                                                        'firebasestorage') ==
-                                                true
-                                            ? CachedNetworkImage(
-                                                imageUrl: FirebaseAuth.instance
-                                                    .currentUser!.photoURL!,
-                                                width: 200,
-                                                height: 200,
-                                                fit: BoxFit.cover,
-                                              )
-                                            : Image.asset('assets/images/avatar.png')
-                                        : Image.file(
-                                            File(value!.path),
-                                            width: 200,
-                                            height: 200,
-                                            fit: BoxFit.cover,
-                                          )
-                                    : Image.asset('assets/images/avatar.png');
-                              })),
-                              SizedBox(
-                        height: 30,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          IconButton(
-                              onPressed: () async {
-                                showModalBottomSheet(
-                  context: context,
-                  builder: ((builder) => bottomSheet()),
-                );
-                              },
-                              icon: Icon(
-                                Icons.add_a_photo,
-                                color: Colors.teal,
-                                size: 30,
-                              ))
+            SizedBox(
+              height: 15,
+            ),
+            CircleAvatar(
+                child: ValueListenableBuilder(
+                    valueListenable: image,
+                    builder: (context, value, child) {
+                      return FirebaseAuth.instance.currentUser!.photoURL != null
+                          ? value?.path == null
+                              ? FirebaseAuth.instance.currentUser?.photoURL!
+                                          .contains('firebasestorage') ==
+                                      true
+                                  ? CachedNetworkImage(
+                                      imageUrl: FirebaseAuth
+                                          .instance.currentUser!.photoURL!,
+                                      width: 200,
+                                      height: 200,
+                                      fit: BoxFit.cover,
+                                    )
+                                  : Image.asset('assets/avatar.png')
+                              : Image.file(
+                                  File(value!.path),
+                                  width: 200,
+                                  height: 200,
+                                  fit: BoxFit.cover,
+                                )
+                          : Image.asset('assets/avatar.png');
+                    })),
+            SizedBox(
+              height: 30,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                IconButton(
+                    onPressed: () async {
+                      showModalBottomSheet(
+                        context: context,
+                        builder: ((builder) => bottomSheet()),
+                      );
+                    },
+                    icon: Icon(
+                      Icons.add_a_photo,
+                      color: Colors.teal,
+                      size: 30,
+                    ))
+              ],
+            ),
+            Row(
+              children: [
+                /*Text(
+                  'Name: ',
+                  style: GoogleFonts.abel(
+                      textStyle: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 25,
+                  )),
+                  textAlign: TextAlign.center,
+                ),*/
+                Expanded(
+                    child: ValueListenableBuilder(
+                        valueListenable: cname,
+                        builder: (context, value, child) {
+                          return Text(
+                            FirebaseAuth.instance.currentUser!.displayName!,
+                            style: GoogleFonts.abel(
+                                textStyle: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 25,
+                            )),
+                            textAlign: TextAlign.center,
+                          );
+                        })),
+                IconButton(
+                    onPressed: () {
+                      AlertDialog alert = AlertDialog(
+                        title: Text("Change Name"),
+                        content: Expanded(
+                          child: TextFormField(
+                            controller: newn,
+                            decoration: const InputDecoration(
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(10),
+                                ),
+                              ),
+                              hintText: 'New Name',
+                              labelText: 'New Name',
+                            ),
+                          ),
+                        ),
+                        actions: [
+                          ElevatedButton(
+                            child: Text("Cancelar"),
+                            style: ButtonStyle(
+                              backgroundColor:
+                                  MaterialStateProperty.all<Color>(redcolor),
+                              shape: MaterialStateProperty.all(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(16),
+                                ),
+                              ),
+                            ),
+                            onPressed: () {
+                              print("Cancelando..");
+
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                          ElevatedButton(
+                            child: Text("Aceptar"),
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all<Color>(
+                                  primarycolor),
+                              shape: MaterialStateProperty.all(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(16),
+                                ),
+                              ),
+                            ),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                              setState(() {
+                                FirebaseAuth.instance.currentUser!
+                                    .updateDisplayName(newn.text);
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                        content: Text(
+                                            'Nombre actualizado correctamente')));
+                              });
+                              // Otras acciones de eliminar
+                            },
+                          ),
                         ],
-                      ),
-                      Row(
-                        children: [
-                          Text('Name: ',style:GoogleFonts.abel(textStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 25,)), textAlign: TextAlign.center,),
-                          Expanded(child: ValueListenableBuilder(
-                            valueListenable: cname,
-                            builder: (context, value, child) {
-                              return Text(FirebaseAuth.instance.currentUser!.displayName!, style:GoogleFonts.abel(textStyle: TextStyle( fontSize: 25)), textAlign: TextAlign.center,);
-                            })),
-                          
-                          
-    IconButton(onPressed: (){
-      AlertDialog alert = AlertDialog(
-      title: Text("Change Name"),
-      content: Expanded(child: 
-      TextFormField(
-        controller: newn,
-        decoration: const InputDecoration(
-        border: OutlineInputBorder(
-        borderRadius: BorderRadius.all(
-        Radius.circular(10),
-        ),
-      ),
-      hintText: 'New Name',
-      labelText: 'New Name',
-    ),
-  ),
-      ),
-      
-      actions: [
-        ElevatedButton(
-      child: Text("Cancelar"),
-      style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all<Color>(redcolor),
-        shape: MaterialStateProperty.all(
-          RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-          ),
-        ),
-      ),
-      onPressed: () {
-        print("Cancelando..");
-        
-        Navigator.of(context).pop();
-      },
-    ),
-        ElevatedButton(
-      child: Text("Aceptar"),
-      style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all<Color>(primarycolor),
-        shape: MaterialStateProperty.all(
-          RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-          ),
-        ),
-      ),
-      onPressed: () {
-        Navigator.of(context).pop();
-        setState(() {
-          FirebaseAuth.instance.currentUser!.updateDisplayName(newn.text);
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                                content: Text('Nombre actualizado correctamente')));
-        });
-        // Otras acciones de eliminar
-      },
-    ),
-      ],
-    );
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
-                          }, icon: Icon(Icons.edit))
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Text('Email: ', style:GoogleFonts.abel(textStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 25)), textAlign: TextAlign.center,),
-                          Expanded(child: Text(FirebaseAuth.instance.currentUser!.email!, style:GoogleFonts.abel(textStyle: TextStyle( fontSize: 25)), textAlign: TextAlign.center,),)
-                          
-                          
-                        ],
-                      ),
-                      SizedBox(height: 15,),
-                      TextButton(
-                        style: TextButton.styleFrom(
-                    backgroundColor: Color.fromARGB(255, 205, 153, 207),
-                    foregroundColor: Color.fromARGB(255, 29, 4, 4),
-                    padding: const EdgeInsets.all(16.0),
-                    textStyle: const TextStyle(fontSize: 20),
+                      );
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return alert;
+                        },
+                      );
+                    },
+                    icon: Icon(Icons.edit))
+              ],
+            ),
+            Row(
+              children: [
+                /*Text(
+                  'Email: ',
+                  style: GoogleFonts.abel(
+                      textStyle:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 25)),
+                  textAlign: TextAlign.center,
+                ),*/
+                Expanded(
+                  child: Text(
+                    FirebaseAuth.instance.currentUser!.email!,
+                    style: GoogleFonts.abel(textStyle: TextStyle(fontSize: 25)),
+                    textAlign: TextAlign.center,
                   ),
-                        onPressed: () async{
-                        
-                        if (image.value != null) {  
-                          final uploaded = await uploadImage(File(image.value!.path));
-                          if (uploaded) {
-                            flag.setFlagListPost(true);
-                            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                                content: Text('Imagen subida correctamente')));
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                              content: Text('Error al subir la imagen')));
-                            }
-                        };
-                      }, child: Text('Save changes')),
+                )
+              ],
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            TextButton(
+                style: TextButton.styleFrom(
+                  backgroundColor: Color.fromARGB(255, 205, 153, 207),
+                  foregroundColor: Color.fromARGB(255, 29, 4, 4),
+                  padding: const EdgeInsets.all(16.0),
+                  textStyle: const TextStyle(fontSize: 20),
+                ),
+                onPressed: () async {
+                  if (image.value != null) {
+                    final uploaded = await uploadImage(File(image.value!.path));
+                    if (uploaded) {
+                      flag.setFlagListPost(true);
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                          content: Text('Imagen subida correctamente')));
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                          content: Text('Error al subir la imagen')));
+                    }
+                  }
+                  ;
+                },
+                child: Text('Save changes')),
           ],
         ),
       ),
     );
   }
+
   Widget imageProfile() {
     return Center(
       child: Stack(
         children: <Widget>[
           CircleAvatar(
-            radius: 80.0,
-            backgroundImage: _imageFile == null
-                ? const AssetImage("assets/avatar.png") as ImageProvider
-                : uploadImage(File(_imageFile!.path)) as ImageProvider
-          ),
+              radius: 80.0,
+              backgroundImage: _imageFile == null
+                  ? const AssetImage("assets/avatar.png") as ImageProvider
+                  : uploadImage(File(_imageFile!.path)) as ImageProvider),
           Positioned(
             bottom: 20.0,
             right: 20.0,
@@ -231,8 +261,7 @@ class _EditProfileState extends State<EditProfile> {
     );
   }
 
-
-   Widget bottomSheet() {
+  Widget bottomSheet() {
     return Container(
       height: 100.0,
       width: MediaQuery.of(context).size.width,
@@ -276,8 +305,8 @@ class _EditProfileState extends State<EditProfile> {
   }
 
   void takePhoto(ImageSource source) async {
-    image.value = await _picker.pickImage(
-                                    source:source);// ImageSource.camera);
+    image.value =
+        await _picker.pickImage(source: source); // ImageSource.camera);
     /*final pickedFile = await _picker.getImage(
       source: source,
     );*/
@@ -285,8 +314,6 @@ class _EditProfileState extends State<EditProfile> {
       _imageFile = pickedFile;
     });*/
   }
-
-
 
   showConfirmDelete(BuildContext context) {
     Widget cancelButton = ElevatedButton(
@@ -301,7 +328,7 @@ class _EditProfileState extends State<EditProfile> {
       ),
       onPressed: () {
         print("Cancelando..");
-        
+
         Navigator.of(context).pop();
       },
     );
@@ -318,7 +345,7 @@ class _EditProfileState extends State<EditProfile> {
       onPressed: () {
         FirebaseAuth.instance.currentUser!.updateDisplayName(newn.text);
         print("Eliminando..");
-        
+
         Navigator.of(context).pop();
         // Otras acciones de eliminar
       },
@@ -329,15 +356,15 @@ class _EditProfileState extends State<EditProfile> {
       content: TextFormField(
         controller: newn,
         decoration: const InputDecoration(
-        border: OutlineInputBorder(
-        borderRadius: BorderRadius.all(
-        Radius.circular(10),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(10),
+            ),
+          ),
+          hintText: 'New Name',
+          labelText: 'New Name',
         ),
       ),
-      hintText: 'New Name',
-      labelText: 'New Name',
-    ),
-  ),
       actions: [
         cancelButton,
         continueButton,
