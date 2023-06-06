@@ -140,7 +140,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   onPressed: () 
                   
                   async{
-                     if (_imageFile!.path != null) {  
+                     
+                    if (_FormKey.currentState!.validate() == true) {
+                      try{
+                          username=name.text+' '+lastnam.text;
+                          emailAuth.registerWithEmailAndPassword(
+                          email: emailUser.text,
+                          password: passwordUser.text,
+                          ).then((value)async {
+                          FirebaseAuth.instance.currentUser!.updateDisplayName(username);
+                          if (_imageFile!.path != null) {  
                           final uploaded = await uploadImage(File(_imageFile!.path));
                           if (uploaded) {
                             //flag.setflagListPost();
@@ -151,14 +160,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               content: Text('Error al subir la imagen')));
                             }
                         }
-                    if (_FormKey.currentState!.validate() == true) {
-                      try{
-                          username=name.text+' '+lastnam.text;
-                          emailAuth.registerWithEmailAndPassword(
-                          email: emailUser.text,
-                          password: passwordUser.text,
-                          ).then((value) {
-                          FirebaseAuth.instance.currentUser!.updateDisplayName(username);
 
           if (value) {
             //user!.sendEmailVerification();
